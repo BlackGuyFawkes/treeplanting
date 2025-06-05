@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenPlot Urban Farming</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    :root {
+      --primary: #2a9d8f;
+      --primary-light: #4abca8;
+      --secondary: #8ac6a1;
+      --accent: #e9c46a;
+      --dark: #1d3c34;
+      --light: #f0f7f5;
+      --gray: #94a89e;
+      --warning: #e67e22;
+      --error: #e74c3c;
+      --success: #2ecc71;
+    }
+    
+    body {
+      background-color: #f8fbf0;
+      color: #333;
+      line-height: 1.6;
+      background-image: radial-gradient(circle, #e8f4f1 10%, transparent 10%), 
+                        radial-gradient(circle, #e8f4f1 10%, transparent 10%);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary), #1d6f5e);
+      color: white;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), #e9b759, #f4d290);
+    }
+    
+    h1 {
+      margin-bottom: 1.5rem;
+      font-size: 2.8rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+    
+    h1 i {
+      color: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+    
+    nav button {
+      background-color: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 0.9rem 1.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.05rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    nav button:hover, nav button.active {
+      background-color: var(--accent);
+      color: var(--dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    nav button i {
+      font-size: 1.2rem;
+    }
+    
+    main {
+      max-width: 1000px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .tab {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.5s ease;
+      border: 1px solid #dde8e1;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tab::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='%23e8f4f1' d='M42.9,-58.4C54.5,-50.7,62.3,-36.1,66.4,-20.7C70.6,-5.2,71.1,11.1,67.3,26.6C63.5,42.1,55.4,56.8,43.6,64.7C31.7,72.6,16.3,73.7,1.9,71.1C-12.5,68.4,-25,62.1,-35.8,53.7C-46.6,45.3,-55.7,34.9,-62.4,22.2C-69.2,9.5,-73.7,-5.4,-70.8,-18.6C-67.9,-31.7,-57.6,-43.1,-45.2,-50.4C-32.8,-57.7,-18.4,-60.8,-1.7,-58.8C15,-56.8,30.1,-49.7,42.9,-58.4Z' transform='translate(100 100)'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.3;
+      z-index: 0;
+    }
+    
+    .tab.active {
+      display: block;
+    }
+    
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1.8rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid #e2e8e0;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    h2 i {
+      color: var(--primary-light);
+      font-size: 1.5rem;
+    }
+    
+    form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    @media (min-width: 768px) {
+      form {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .form-group.full {
+        grid-column: 1 / -1;
+      }
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    label {
+      margin-bottom: 0.7rem;
+      font-weight: 600;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    label i {
+      color: var(--primary-light);
+    }
+    
+    input, textarea, select {
+      padding: 1rem;
+      border: 1px solid #cbd5c1;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      background: var(--light);
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(74, 157, 143, 0.15);
+    }
+    
+    button[type="submit"] {
+      background: linear-gradient(135deg, var(--primary), #1d6f5e);
+      color: white;
+      border: none;
+      padding: 1.1rem 1.8rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      grid-column: 1 / -1;
+      max-width: 300px;
+      margin: 1rem auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      box-shadow: 0 4px 10px rgba(42, 157, 143, 0.25);
+    }
+    
+    button[type="submit"]:hover {
+      background: linear-gradient(135deg, #1d6f5e, var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(42, 157, 143, 0.35);
+    }
+    
+    #plots-list {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-top: 2rem;
+      border: 1px solid #dde8e1;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      border-left: 4px solid var(--primary-light);
+      transition: transform 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .card h3 {
+      color: var(--dark);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    
+    .card .date {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    
+    .card .description {
+      margin-top: 0.8rem;
+      line-height: 1.7;
+      color: #444;
+    }
+    
+    .card .location {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    .placeholder-content {
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--gray);
+    }
+    
+    .placeholder-content i {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: #cbd5c1;
+    }
+    
+    .placeholder-content h3 {
+      margin-bottom: 0.8rem;
+      color: var(--dark);
+    }
+    
+    .map-container {
+      height: 400px;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+      overflow: hidden;
+      position: relative;
+      background: #e2e8e0;
+    }
+    
+    .map-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,0.9);
+      color: var(--dark);
+      text-align: center;
+      padding: 2rem;
+      z-index: 10;
+    }
+    
+    .map-overlay h3 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--dark);
+      background: #e8f4f1;
+      margin-top: 3rem;
+      border-top: 1px solid #d1dfd9;
+    }
+    
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.2rem;
+    }
+    
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary-light);
+      text-decoration: underline;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 1.2rem 2.2rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      z-index: 1000;
+      animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .notification.error {
+      background: var(--error);
+    }
+    
+    .notification.warning {
+      background: var(--warning);
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    .plot-card {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 12px;
+      background: var(--light);
+      border: 1px solid #dde8e1;
+    }
+    
+    .plot-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      background: #e8f4f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 2px solid #d1dfd9;
+      overflow: hidden;
+    }
+    
+    .plot-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .plot-image i {
+      font-size: 3rem;
+      color: var(--primary-light);
+    }
+    
+    .plot-info {
+      flex: 1;
+    }
+    
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .resource-card {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #dde8e1;
+      transition: all 0.3s;
+    }
+    
+    .resource-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+    
+    .resource-card h3 {
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .resource-card p {
+      color: #555;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .resource-link {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .resource-link:hover {
+      background: var(--primary-light);
+    }
+    
+    .photo-upload {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .upload-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .upload-btn {
+      background: var(--secondary);
+      color: var(--dark);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    
+    .upload-btn:hover {
+      background: var(--accent);
+    }
+    
+    .file-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    
+    .file-name {
+      font-size: 0.95rem;
+      color: var(--dark);
+    }
+    
+    .file-size {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    
+    .file-warning {
+      color: var(--warning);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.3rem;
+    }
+    
+    .file-error {
+      color: var(--error);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.3rem;
+    }
+    
+    .registration-success {
+      text-align: center;
+      padding: 3rem;
+      background: rgba(46, 204, 113, 0.1);
+      border-radius: 12px;
+      margin-top: 2rem;
+      display: none;
+    }
+    
+    .registration-success i {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 1.5rem;
+    }
+    
+    .plot-size-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .plot-size-button {
+      flex: 1;
+      padding: 1rem;
+      background: var(--light);
+      border: 2px solid #dde8e1;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .plot-size-button.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .plot-size-button i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .counter {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .counter button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--light);
+      border: 1px solid #cbd5c1;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    
+    .counter input {
+      width: 50px;
+      text-align: center;
+    }
+    
+    .tabs-container {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    
+    .tab-button {
+      padding: 0.8rem 1.5rem;
+      background: var(--light);
+      border: none;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+    
+    .tab-button.active {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .plot-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .feature {
+      background: var(--light);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .price-tag {
+      background: var(--accent);
+      color: var(--dark);
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      font-weight: bold;
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-seedling"></i> GreenPlot Urban Farming</h1>
+    <nav>
+      <button class="active" onclick="showTab('plots')"><i class="fas fa-map-marked-alt"></i> Available Plots</button>
+      <button onclick="showTab('rent')"><i class="fas fa-handshake"></i> Rent a Plot</button>
+      <button onclick="showTab('resources')"><i class="fas fa-book"></i> Gardening Resources</button>
+      <button onclick="showTab('community')"><i class="fas fa-users"></i> Community</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Plots Tab -->
+    <section id="plots" class="tab active">
+      <h2><i class="fas fa-map-marked-alt"></i> Available Farming Plots</h2>
+      
+      <div class="tabs-container">
+        <button class="tab-button active" data-city="all">All Locations</button>
+        <button class="tab-button" data-city="downtown">Downtown</button>
+        <button class="tab-button" data-city="north">North End</button>
+        <button class="tab-button" data-city="east">East Side</button>
+        <button class="tab-button" data-city="west">West End</button>
+      </div>
+      
+      <div id="plots-list">
+        <div class="card" data-city="downtown">
+          <div class="price-tag">$35/month</div>
+          <h3><i class="fas fa-tractor"></i> City Center Community Garden</h3>
+          <div class="description">
+            <p>Sunny plots in the heart of the city. Perfect for vegetables and herbs. Water access available on site.</p>
+            <div class="location"><i class="fas fa-location-dot"></i> 123 Main St, Downtown</div>
+            <div class="plot-features">
+              <span class="feature"><i class="fas fa-sun"></i> Full Sun</span>
+              <span class="feature"><i class="fas fa-tint"></i> Water Access</span>
+              <span class="feature"><i class="fas fa-tools"></i> Tools Provided</span>
+              <span class="feature"><i class="fas fa-car"></i> Parking</span>
+            </div>
+            <div class="counter">
+              <span><i class="fas fa-seedling"></i> 12 plots available</span>
+            </div>
+          </div>
+          <button class="resource-link" style="margin-top: 1rem;" onclick="showTab('rent')">Rent This Plot</button>
+        </div>
+        
+        <div class="card" data-city="north">
+          <div class="price-tag">$25/month</div>
+          <h3><i class="fas fa-leaf"></i> Northside Urban Farm</h3>
+          <div class="description">
+            <p>Large plots with rich soil. Community compost program available. Great for beginner gardeners.</p>
+            <div class="location"><i class="fas fa-location-dot"></i> 456 Oak Ave, North End</div>
+            <div class="plot-features">
+              <span class="feature"><i class="fas fa-sun"></i> Partial Sun</span>
+              <span class="feature"><i class="fas fa-tint"></i> Water Access</span>
+              <span class="feature"><i class="fas fa-compost"></i> Compost Program</span>
+              <span class="feature"><i class="fas fa-users"></i> Community Events</span>
+            </div>
+            <div class="counter">
+              <span><i class="fas fa-seedling"></i> 8 plots available</span>
+            </div>
+          </div>
+          <button class="resource-link" style="margin-top: 1rem;" onclick="showTab('rent')">Rent This Plot</button>
+        </div>
+        
+        <div class="card" data-city="east">
+          <div class="price-tag">$30/month</div>
+          <h3><i class="fas fa-tree"></i> Eastwood Gardens</h3>
+          <div class="description">
+            <p>Organic gardening plots with fencing to protect from wildlife. Perfect for families and serious gardeners.</p>
+            <div class="location"><i class="fas fa-location-dot"></i> 789 Elm St, East Side</div>
+            <div class="plot-features">
+              <span class="feature"><i class="fas fa-sun"></i> Full Sun</span>
+              <span class="feature"><i class="fas fa-tint"></i> Water Access</span>
+              <span class="feature"><i class="fas fa-shield-alt"></i> Fenced</span>
+              <span class="feature"><i class="fas fa-car"></i> Parking</span>
+            </div>
+            <div class="counter">
+              <span><i class="fas fa-seedling"></i> 5 plots available</span>
+            </div>
+          </div>
+          <button class="resource-link" style="margin-top: 1rem;" onclick="showTab('rent')">Rent This Plot</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rent Tab -->
+    <section id="rent" class="tab">
+      <h2><i class="fas fa-handshake"></i> Rent a Farming Plot</h2>
+      
+      <form id="rental-form">
+        <div class="form-group">
+          <label for="location"><i class="fas fa-map-marker-alt"></i> Select Plot Location:</label>
+          <select id="location" name="location" required>
+            <option value="">Choose a garden location</option>
+            <option value="downtown">City Center Community Garden</option>
+            <option value="north">Northside Urban Farm</option>
+            <option value="east">Eastwood Gardens</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="name"><i class="fas fa-user"></i> Full Name:</label>
+          <input type="text" id="name" name="name" required placeholder="Your full name">
+        </div>
+        
+        <div class="form-group">
+          <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+          <input type="email" id="email" name="email" required placeholder="Your email address">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone"><i class="fas fa-phone"></i> Phone Number:</label>
+          <input type="tel" id="phone" name="phone" required placeholder="Your phone number">
+        </div>
+        
+        <div class="form-group">
+          <label><i class="fas fa-ruler-combined"></i> Plot Size:</label>
+          <div class="plot-size-buttons">
+            <div class="plot-size-button" data-size="small">
+              <i class="fas fa-seedling"></i>
+              <div>Small (4x8 ft)</div>
+              <div>$25/month</div>
+            </div>
+            <div class="plot-size-button" data-size="medium">
+              <i class="fas fa-tree"></i>
+              <div>Medium (8x8 ft)</div>
+              <div>$35/month</div>
+            </div>
+            <div class="plot-size-button" data-size="large">
+              <i class="fas fa-tractor"></i>
+              <div>Large (12x12 ft)</div>
+              <div>$50/month</div>
+            </div>
+          </div>
+          <input type="hidden" id="plot-size" name="plot-size" value="">
+        </div>
+        
+        <div class="form-group">
+          <label for="duration"><i class="fas fa-calendar-alt"></i> Rental Duration:</label>
+          <select id="duration" name="duration" required>
+            <option value="3">3 months (May-July)</option>
+            <option value="6">6 months (May-October)</option>
+            <option value="12">12 months (Full year)</option>
+          </select>
+        </div>
+        
+        <div class="form-group full">
+          <label for="experience"><i class="fas fa-clipboard-list"></i> Gardening Experience:</label>
+          <textarea id="experience" name="experience" rows="2" placeholder="Briefly describe your gardening experience..."></textarea>
+        </div>
+        
+        <div class="form-group full">
+          <div style="display: flex; align-items: start; gap: 10px;">
+            <input type="checkbox" id="agreement" name="agreement" required style="margin-top: 5px;">
+            <label for="agreement" style="font-weight: normal;">I agree to follow community garden rules and maintain my plot responsibly.</label>
+          </div>
+        </div>
+        
+        <button type="submit"><i class="fas fa-handshake"></i> Complete Rental</button>
+      </form>
+      
+      <div class="registration-success" id="success-message">
+        <i class="fas fa-check-circle"></i>
+        <h3>Plot Reserved Successfully!</h3>
+        <p>Thank you for renting an urban farming plot. We've sent a confirmation email with your rental details.</p>
+        <p>A garden coordinator will contact you within 48 hours to complete your registration and provide access.</p>
+        <button class="resource-link" style="margin-top: 1.5rem;" onclick="showTab('resources')">Explore Gardening Resources</button>
+      </div>
+    </section>
+
+    <!-- Resources Tab -->
+    <section id="resources" class="tab">
+      <h2><i class="fas fa-book"></i> Gardening Resources</h2>
+      <div id="resource-list">
+        <div class="resources-grid">
+          <div class="resource-card">
+            <h3><i class="fas fa-file-pdf"></i> Seasonal Planting Guide</h3>
+            <p>Know what to plant and when in our climate. Download our comprehensive planting calendar.</p>
+            <a href="#" class="resource-link">Download Guide</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3><i class="fas fa-video"></i> Organic Pest Control</h3>
+            <p>Video tutorials on natural ways to protect your plants from pests without chemicals.</p>
+            <a href="#" class="resource-link">Watch Videos</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3><i class="fas fa-book"></i> Companion Planting</h3>
+            <p>Learn which plants grow well together to maximize your harvest and naturally deter pests.</p>
+            <a href="#" class="resource-link">Read Guide</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3><i class="fas fa-map"></i> Local Seed Suppliers</h3>
+            <p>Find local sources for organic, heirloom seeds suited to our growing region.</p>
+            <a href="#" class="resource-link">View Map</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3><i class="fas fa-graduation-cap"></i> Gardening Workshops</h3>
+            <p>Join our free monthly workshops covering everything from soil preparation to harvesting.</p>
+            <a href="#" class="resource-link">View Schedule</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3><i class="fas fa-compost"></i> Composting Guide</h3>
+            <p>Learn how to turn kitchen scraps into garden gold with our easy composting methods.</p>
+            <a href="#" class="resource-link">Read Guide</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Tab -->
+    <section id="community" class="tab">
+      <h2><i class="fas fa-users"></i> Garden Community</h2>
+      
+      <div class="card">
+        <h3><i class="fas fa-calendar-check"></i> Upcoming Community Events</h3>
+        <div class="description">
+          <p>Join us for these upcoming events in our community gardens:</p>
+          <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+            <li><strong>June 10:</strong> Seed Swap & Plant Exchange</li>
+            <li><strong>June 17:</strong> Organic Pest Control Workshop</li>
+            <li><strong>June 24:</strong> Community Harvest Potluck</li>
+            <li><strong>July 1:</strong> Garden Photography Walk</li>
+          </ul>
+          <button class="resource-link" style="margin-top: 1.5rem;">View Full Calendar</button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3><i class="fas fa-comments"></i> Community Forum</h3>
+        <div class="description">
+          <p>Connect with other urban farmers in our online community forum:</p>
+          <div class="plot-features" style="margin-top: 1rem;">
+            <span class="feature"><i class="fas fa-seedling"></i> Ask gardening questions</span>
+            <span class="feature"><i class="fas fa-exchange-alt"></i> Trade seeds and produce</span>
+            <span class="feature"><i class="fas fa-tools"></i> Share tools and resources</span>
+            <span class="feature"><i class="fas fa-calendar"></i> Organize work parties</span>
+          </div>
+          <button class="resource-link" style="margin-top: 1.5rem;">Join the Forum</button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3><i class="fas fa-hands-helping"></i> Volunteer Opportunities</h3>
+        <div class="description">
+          <p>Help maintain community spaces and support our urban farming initiatives:</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div style="background: var(--light); padding: 1rem; border-radius: 10px;">
+              <h4><i class="fas fa-tools"></i> Garden Maintenance</h4>
+              <p>Help keep community areas beautiful</p>
+            </div>
+            <div style="background: var(--light); padding: 1rem; border-radius: 10px;">
+              <h4><i class="fas fa-apple-alt"></i> Harvest Sharing</h4>
+              <p>Distribute surplus to food banks</p>
+            </div>
+            <div style="background: var(--light); padding: 1rem; border-radius: 10px;">
+              <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Assistant</h4>
+              <p>Help with gardening workshops</p>
+            </div>
+            <div style="background: var(--light); padding: 1rem; border-radius: 10px;">
+              <h4><i class="fas fa-compost"></i> Compost Management</h4>
+              <p>Maintain our community compost</p>
+            </div>
+          </div>
+          <button class="resource-link" style="margin-top: 1.5rem;">Sign Up to Volunteer</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>GreenPlot Urban Farming - Cultivating Community Since 2015</p>
+      <p>© 2025 GreenPlot Urban Farming Initiative. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+        <a href="#"><i class="fas fa-file-contract"></i> Terms of Use</a>
+        <a href="#"><i class="fas fa-phone"></i> Contact</a>
+        <a href="#"><i class="fas fa-info-circle"></i> About Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize the application
+    function initApp() {
+      // Setup plot size buttons
+      document.querySelectorAll('.plot-size-button').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.plot-size-button').forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById('plot-size').value = this.dataset.size;
+        });
+      });
+      
+      // Setup city filters
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          const city = this.dataset.city;
+          const cards = document.querySelectorAll('.card');
+          
+          if (city === 'all') {
+            cards.forEach(card => card.style.display = 'block');
+          } else {
+            cards.forEach(card => {
+              if (card.dataset.city === city) {
+                card.style.display = 'block';
+              } else {
+                card.style.display = 'none';
+              }
+            });
+          }
+        });
+      });
+    }
+    
+    // Tab navigation
+    function showTab(id) {
+      // Hide all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(id).classList.add('active');
+      
+      // Update active button
+      document.querySelectorAll('nav button').forEach(button => {
+        button.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+    
+    // Show notification
+    function showNotification(message, isError = false) {
+      // Remove existing notifications
+      const existing = document.querySelector('.notification');
+      if (existing) existing.remove();
+      
+      // Create new notification
+      const notification = document.createElement('div');
+      notification.className = `notification ${isError ? 'error' : ''}`;
+      notification.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
+      
+      document.body.appendChild(notification);
+      
+      // Auto-remove after animation
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+    
+    // Form submission handlers
+    document.addEventListener('DOMContentLoaded', function() {
+      initApp();
+      
+      // Rental form submission
+      const rentalForm = document.getElementById('rental-form');
+      rentalForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        const submitBtn = rentalForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+        
+        // Simulate API submission
+        setTimeout(() => {
+          // Show success message
+          rentalForm.style.display = 'none';
+          document.getElementById('success-message').style.display = 'block';
+          
+          // Reset button
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          
+          // Show notification
+          showNotification('Plot rental confirmed!');
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
